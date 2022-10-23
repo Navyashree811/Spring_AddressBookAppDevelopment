@@ -81,4 +81,10 @@ public class AddressBookService implements IAddressBookService {
 		return u;
 	}
 
+	@Override
+	public List<Contact> getAll(String token) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

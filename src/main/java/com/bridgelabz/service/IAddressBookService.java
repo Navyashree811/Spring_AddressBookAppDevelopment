@@ -9,7 +9,7 @@ import com.bridgelabz.model.Contact;
 import com.bridgelabz.model.User;
 
 public interface IAddressBookService {
-	Contact createAddressBook(ContactDto contactDto);
+	String createAddressBook(ContactDto contactDto);
 
 	Contact updateAddressBook(int personId, ContactDto contactDto);
 
@@ -21,7 +21,7 @@ public interface IAddressBookService {
 
 	User register(RegisterDto registerDto);
 
-	User login(LoginDto loginDto);
+	String login(LoginDto loginDto);
 
 	List<Contact> getAll(String token);
 

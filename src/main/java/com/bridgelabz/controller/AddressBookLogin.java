@@ -21,25 +21,26 @@ import com.bridgelabz.service.IAddressBookService;
 @RequestMapping("/userService")
 public class AddressBookLogin {
 
-	@Autowired IAddressBookService service;
-	
+	@Autowired
+	IAddressBookService service;
+
 	@PostMapping("/register")
-	public ResponseEntity<ResponseDto> add(@RequestBody RegisterDto  registerDto) {
+	public ResponseEntity<ResponseDto> add(@RequestBody RegisterDto registerDto) {
 		User u = null;
 		u = service.register(registerDto);
 		ResponseDto responseDto = new ResponseDto("Registration Successful !", u);
-		return new ResponseEntity<ResponseDto>(responseDto,HttpStatus.OK);
+		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/login")
-	public ResponseEntity<ResponseDto> login(@RequestBody LoginDto  loginDto) {
-		
-		User u = null;
+	public ResponseEntity<ResponseDto> login(@RequestBody LoginDto loginDto) {
+
+		String u = null;
 		u = service.login(loginDto);
-		if(u != null) {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successful !",  u.getUserName()).body(new ResponseDto("Login SuccessFul !", u.getEmaild()));
-		}
-		else {
+		if (u != null) {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successful !", loginDto.getUserName())
+					.body(new ResponseDto("Login SuccessFul !", u));
+		} else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto("Login failed", null));
 		}
 	}

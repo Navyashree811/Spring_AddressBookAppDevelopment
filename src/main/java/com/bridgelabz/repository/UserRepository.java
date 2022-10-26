@@ -9,6 +9,7 @@ import com.bridgelabz.model.User;
 public interface UserRepository extends JpaRepository<User, Integer>  {  
 	
 	User findByUserName(String user);
+	User findByUserId(long id);
 	
 
 }

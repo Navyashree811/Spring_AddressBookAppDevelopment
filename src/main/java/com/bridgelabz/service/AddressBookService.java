@@ -12,10 +12,14 @@ import com.bridgelabz.model.Contact;
 import com.bridgelabz.model.User;
 import com.bridgelabz.repository.AddressBookRepository;
 import com.bridgelabz.repository.UserRepository;
+import com.bridgelabz.util.EmailSenderService;
 import com.bridgelabz.util.JwtToken;
 
 @Service
 public class AddressBookService implements IAddressBookService {
+
+	@Autowired
+	EmailSenderService senderService;
 
 	@Autowired
 	JwtToken jwtToken;
@@ -27,11 +31,12 @@ public class AddressBookService implements IAddressBookService {
 	private UserRepository userRepository;
 
 	@Override
-	public Contact createAddressBook(ContactDto contactDto) {
+	public String createAddressBook(ContactDto contactDto) {
 
-		Contact c = null;
-		c = new Contact(contactDto);
-		return repository.save(c);
+		Contact c = new Contact(contactDto);
+		repository.save(c);
+		senderService.sendEmail(c.getEmail(), "Test Email", "Data add Successful !" + c);
+		return jwtToken.createToken(c.getId());
 	}
 
 	@Override
@@ -71,18 +76,20 @@ public class AddressBookService implements IAddressBookService {
 	}
 
 	@Override
-	public User login(LoginDto loginDto) {
+	public String login(LoginDto loginDto) {
 
 		User u = userRepository.findByUserName(loginDto.getUserName());
+		String token = null;
+
 		if (u != null) {
 			if (loginDto.getPassword().equalsIgnoreCase(u.getPassword())) {
 
-				String token = jwtToken.createToken(u.getUserId());
+				token = jwtToken.createToken(u.getUserId());
 				System.out.println("Jwt Token : " + token);
 			}
 
 		}
-		return u;
+		return token;
 	}
 
 	@Override

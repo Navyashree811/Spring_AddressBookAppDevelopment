@@ -8,17 +8,21 @@ import com.bridgelabz.dto.RegisterDto;
 import com.bridgelabz.model.Contact;
 import com.bridgelabz.model.User;
 
-public interface IAddressBookService {  
+public interface IAddressBookService {
 	Contact createAddressBook(ContactDto contactDto);
+
 	Contact updateAddressBook(int personId, ContactDto contactDto);
- 
+
 	Contact deleteAddressBookData(int address_id);
-	
+
 	List<Contact> getAddressBookDataAscByCity();
+
 	List<Contact> getAddressBookDataAscByState();
-	
+
 	User register(RegisterDto registerDto);
-	
+
 	User login(LoginDto loginDto);
+
+	List<Contact> getAll(String token);
 
 }

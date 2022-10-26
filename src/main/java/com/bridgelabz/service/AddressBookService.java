@@ -12,13 +12,17 @@ import com.bridgelabz.model.Contact;
 import com.bridgelabz.model.User;
 import com.bridgelabz.repository.AddressBookRepository;
 import com.bridgelabz.repository.UserRepository;
+import com.bridgelabz.util.JwtToken;
 
 @Service
 public class AddressBookService implements IAddressBookService {
 
 	@Autowired
+	JwtToken jwtToken;
+
+	@Autowired
 	private AddressBookRepository repository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -58,7 +62,6 @@ public class AddressBookService implements IAddressBookService {
 		return repository.getAddressBookDataByCityName();
 	}
 
-	
 	@Override
 	public User register(RegisterDto registerDto) {
 
@@ -71,20 +74,25 @@ public class AddressBookService implements IAddressBookService {
 	public User login(LoginDto loginDto) {
 
 		User u = userRepository.findByUserName(loginDto.getUserName());
-		if(u != null) {
-			if(loginDto.getPassword().equalsIgnoreCase(u.getPassword())) {
+		if (u != null) {
+			if (loginDto.getPassword().equalsIgnoreCase(u.getPassword())) {
 
-				u.getUserName();
+				String token = jwtToken.createToken(u.getUserId());
+				System.out.println("Jwt Token : " + token);
 			}
-			
+
 		}
 		return u;
 	}
 
 	@Override
 	public List<Contact> getAll(String token) {
-		// TODO Auto-generated method stub
-		return null;
+
+		jwtToken.decodeJWT(token);
+		List<Contact> getAllBook = repository.getAllBook();
+		System.out.println("getAllBook : " + getAllBook);
+		return getAllBook;
+
 	}
 
 }
